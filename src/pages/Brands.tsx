@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowRight, Car, Truck, Bike, Fuel, Settings } from 'lucide-react';
+import { X, Car, Truck, Bike } from 'lucide-react';
 import { getMarques, getVehicules, type Marque, type Vehicule } from '../utils/api';
+import VehiculeCarousel from '../components/VehiculeCarousel';
 
 const Brands = () => {
   const [selectedBrand, setSelectedBrand] = useState<Marque | null>(null);
@@ -98,7 +99,7 @@ const Brands = () => {
           return (
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-lg"
+              className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-lg"
               onClick={() => setSelectedBrand(null)}
             >
               <motion.div
@@ -106,40 +107,41 @@ const Brands = () => {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: 50 }}
                 transition={{ type: 'spring', bounce: 0.3 }}
-                className="relative w-full max-w-5xl max-h-[95vh] overflow-y-auto bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-3xl"
+                className="relative w-full max-w-4xl max-h-[95vh] flex flex-col bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-3xl overflow-hidden"
                 onClick={e => e.stopPropagation()}
               >
-                <button onClick={() => setSelectedBrand(null)}
-                  className="absolute top-5 right-5 z-10 w-10 h-10 bg-gray-100 dark:bg-zinc-800 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors duration-300 group">
-                  <X className="w-5 h-5 text-gray-600 dark:text-white group-hover:text-white" />
-                </button>
-
-                <div className="p-5 sm:p-8">
-                  {/* Header marque */}
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
-                    <div className="w-16 h-16 bg-gray-100 dark:bg-zinc-800 rounded-2xl p-3 flex items-center justify-center flex-shrink-0">
-                      {selectedBrand.logo
-                        ? <img src={selectedBrand.logo} alt={selectedBrand.nom} className="w-full h-full object-contain" />
-                        : <Icon className="w-8 h-8 text-gray-400" />}
-                    </div>
-                    <div>
-                      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">{selectedBrand.nom}</h2>
-                      <span className="inline-block mt-1 px-3 py-1 bg-red-600/10 dark:bg-red-600/20 border border-red-600/30 rounded-full text-red-600 dark:text-red-400 text-xs">
-                        {selectedBrand.type}
-                      </span>
-                    </div>
+                {/* Header sticky */}
+                <div className="flex items-center gap-4 px-5 py-4 border-b border-gray-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 shrink-0">
+                  <div className="w-12 h-12 bg-gray-100 dark:bg-zinc-800 rounded-xl p-2 flex items-center justify-center shrink-0">
+                    {selectedBrand.logo
+                      ? <img src={selectedBrand.logo} alt={selectedBrand.nom} className="w-full h-full object-contain" />
+                      : <Icon className="w-6 h-6 text-gray-400" />}
                   </div>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white truncate">{selectedBrand.nom}</h2>
+                    <span className="inline-block px-2 py-0.5 bg-red-600/10 dark:bg-red-600/20 border border-red-600/30 rounded-full text-red-600 dark:text-red-400 text-xs">
+                      {selectedBrand.type}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setSelectedBrand(null)}
+                    className="shrink-0 w-9 h-9 bg-gray-100 dark:bg-zinc-800 hover:bg-red-600 hover:text-white rounded-full flex items-center justify-center transition-all duration-200 text-gray-500 dark:text-gray-400"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
 
+                {/* Body scrollable */}
+                <div className="flex-1 overflow-y-auto p-5 sm:p-6">
                   {selectedBrand.description && (
-                    <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-8">{selectedBrand.description}</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-5">{selectedBrand.description}</p>
                   )}
 
-                  {/* Véhicules */}
-                  <div className="flex items-center gap-3 mb-5">
-                    <span className="w-8 h-0.5 bg-red-600" />
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="w-6 h-0.5 bg-red-600" />
+                    <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
                       Véhicules disponibles
-                      {vehicules.length > 0 && <span className="ml-2 text-sm text-gray-400 font-normal">({vehicules.length})</span>}
+                      {vehicules.length > 0 && <span className="ml-2 text-gray-400 font-normal normal-case">({vehicules.length})</span>}
                     </h3>
                   </div>
 
@@ -150,57 +152,18 @@ const Brands = () => {
                       <p className="text-gray-500 text-xs mt-1">Contactez-nous pour plus d'informations.</p>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-                      {vehicules.map((v, i) => (
-                        <motion.div key={v.id}
-                          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
-                          className="bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-2xl overflow-hidden hover:border-red-500/40 dark:hover:border-red-600/30 transition-all group">
-                          {/* Image */}
-                          <div className="relative h-40 bg-gray-200 dark:bg-zinc-700 overflow-hidden">
-                            {v.image
-                              ? <img src={v.image} alt={v.nom} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                              : <div className="w-full h-full flex items-center justify-center"><Car className="w-10 h-10 text-gray-400" /></div>}
-                            <div className="absolute top-2 left-2">
-                              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${v.statut === 'disponible' ? 'bg-green-500 text-white' : 'bg-yellow-500 text-white'}`}>
-                                {v.statut}
-                              </span>
-                            </div>
-                          </div>
-                          {/* Info */}
-                          <div className="p-4">
-                            <p className="text-gray-400 text-xs mb-1">{v.annee}</p>
-                            <h4 className="text-gray-900 dark:text-white font-semibold text-sm mb-3">{v.nom}</h4>
-                            <div className="flex items-center gap-3 mb-3">
-                              <span className="flex items-center gap-1 text-gray-500 dark:text-gray-400 text-xs">
-                                <Fuel className="w-3 h-3 text-red-500" /> {v.carburant}
-                              </span>
-                              <span className="flex items-center gap-1 text-gray-500 dark:text-gray-400 text-xs">
-                                <Settings className="w-3 h-3 text-red-500" /> {v.transmission}
-                              </span>
-                              {v.couleur && <span className="text-gray-500 dark:text-gray-400 text-xs">{v.couleur}</span>}
-                            </div>
-                            <p className="text-gray-900 dark:text-white font-bold text-sm">
-<p className="text-gray-400 text-xs">À partir de</p>
-                            <p className="text-gray-900 dark:text-white font-bold text-sm">{v.prix} <span className="text-xs font-normal text-gray-400">FCFA</span></p>
-                            </p>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
+                    <VehiculeCarousel vehicules={vehicules} marqueName={selectedBrand.nom} />
                   )}
+                </div>
 
-                  {/* CTA */}
-                  <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-100 dark:border-zinc-800">
-                    <a href="/contact"
-                      className="group flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold rounded-full flex items-center justify-center space-x-2 hover:shadow-xl hover:shadow-red-600/30 transition-all">
-                      <span>Demander un devis</span>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </a>
-                    <a href="/contact"
-                      className="flex-1 px-6 py-3 bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-800 dark:text-white font-semibold rounded-full text-center hover:border-red-500/50 transition-all">
-                      Visiter le showroom
-                    </a>
-                  </div>
+                {/* Footer sticky */}
+                <div className="shrink-0 px-5 py-4 border-t border-gray-100 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                  <a
+                    href="/contact"
+                    className="flex items-center justify-center w-full py-3 bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-800 dark:text-white font-semibold rounded-full hover:border-red-500/50 transition-all text-sm"
+                  >
+                    Visiter le showroom
+                  </a>
                 </div>
               </motion.div>
             </motion.div>

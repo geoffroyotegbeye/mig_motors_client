@@ -1,12 +1,40 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle, User, MessageSquare, Car } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle, User, MessageSquare, Car, Building2 } from 'lucide-react';
 import { sendMessage } from '../utils/api';
 
+const AGENCES = ['Bénin - Cotonou', 'Bénin - Parakou', 'Togo', 'Burkina Faso'];
+
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', brand: '', message: '' });
+  const [searchParams] = useSearchParams();
+  const [formData, setFormData] = useState({
+    name: '', email: '', phone: '',
+    subject: searchParams.get('subject') || '',
+    brand: searchParams.get('brand') || '',
+    message: searchParams.get('message') || '',
+    agence: '',
+  });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const subject = searchParams.get('subject');
+    const brand = searchParams.get('brand');
+    const message = searchParams.get('message');
+    if (subject || brand || message) {
+      setFormData(f => ({
+        ...f,
+        subject: subject || f.subject,
+        brand: brand || f.brand,
+        message: message || f.message,
+      }));
+      // Scroll vers le formulaire
+      setTimeout(() => {
+        document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300);
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,7 +42,7 @@ const Contact = () => {
     try {
       await sendMessage(formData);
       setIsSubmitted(true);
-      setFormData({ name: '', email: '', phone: '', subject: '', brand: '', message: '' });
+      setFormData({ name: '', email: '', phone: '', subject: '', brand: '', message: '', agence: '' });
       setTimeout(() => setIsSubmitted(false), 5000);
     } catch {
       // erreur silencieuse
@@ -65,7 +93,7 @@ const Contact = () => {
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 sm:gap-12">
             {/* Form */}
             <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="lg:col-span-3">
-              <div className="bg-white dark:bg-zinc-900/50 border border-gray-200 dark:border-zinc-800 rounded-3xl p-6 sm:p-8 md:p-12 shadow-sm dark:shadow-none">
+              <div className="bg-white dark:bg-zinc-900/50 border border-gray-200 dark:border-zinc-800 rounded-3xl p-6 sm:p-8 md:p-12 shadow-sm dark:shadow-none" id="contact-form">
                 <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Envoyez-nous un message</h2>
                 <p className="text-gray-500 dark:text-gray-400 mb-8">Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.</p>
 
@@ -123,6 +151,18 @@ const Contact = () => {
                       <div className="relative">
                         <MessageSquare className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                         <input type="text" name="subject" value={formData.subject} onChange={handleChange} required className={inputClass} placeholder="Objet de votre message" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-gray-600 dark:text-gray-400 text-sm mb-2">Agence la plus proche</label>
+                      <div className="relative">
+                        <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <select name="agence" value={formData.agence} onChange={handleChange}
+                          className="w-full bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-xl py-4 pl-12 pr-4 text-gray-900 dark:text-white focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all duration-300 appearance-none cursor-pointer outline-none">
+                          <option value="">Sélectionnez une agence</option>
+                          {AGENCES.map(a => <option key={a} value={a}>{a}</option>)}
+                        </select>
                       </div>
                     </div>
 

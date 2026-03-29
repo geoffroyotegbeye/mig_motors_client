@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -15,6 +14,7 @@ import AdminMessages from './admin/pages/AdminMessages';
 import Dashboard from './admin/pages/Dashboard';
 import AdminMarques from './admin/pages/AdminMarques';
 import AdminVehicules from './admin/pages/AdminVehicules';
+import ScrollToTop from './components/ScrollToTop';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
@@ -24,12 +24,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 function AppContent() {
   const { theme } = useTheme();
 
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         {/* Admin routes */}
         <Route path="/admin" element={<AdminLogin />} />
