@@ -66,21 +66,21 @@ export const login = async (username: string, password: string): Promise<string>
 };
 
 // --- Marques ---
-export const getMarques = () => api.get<Marque[]>('/marques').then(r => r.data);
+export const getMarques = () => api.get<Marque[]>('/marques').then(r => Array.isArray(r.data) ? r.data : []);
 export const addMarque = (data: Omit<Marque, 'id' | 'createdAt'>) => api.post<Marque>('/marques', data).then(r => r.data);
 export const updateMarque = (id: number, data: Partial<Marque>) => api.put<Marque>(`/marques/${id}`, data).then(r => r.data);
 export const deleteMarque = (id: number) => api.delete(`/marques/${id}`);
 
 // --- Véhicules ---
 export const getVehicules = (params?: { marqueId?: number; carburant?: string; statut?: string }) =>
-  api.get<Vehicule[]>('/vehicules', { params }).then(r => r.data);
+  api.get<Vehicule[]>('/vehicules', { params }).then(r => Array.isArray(r.data) ? r.data : []);
 export const addVehicule = (data: Omit<Vehicule, 'id' | 'createdAt' | 'marque'>) => api.post<Vehicule>('/vehicules', data).then(r => r.data);
 export const updateVehicule = (id: number, data: Partial<Vehicule>) => api.put<Vehicule>(`/vehicules/${id}`, data).then(r => r.data);
 export const deleteVehicule = (id: number) => api.delete(`/vehicules/${id}`);
 
 // --- Messages ---
 export const sendMessage = (data: Omit<ContactMessage, 'id' | 'read' | 'createdAt'>) => api.post<ContactMessage>('/messages', data).then(r => r.data);
-export const getMessages = () => api.get<ContactMessage[]>('/messages').then(r => r.data);
+export const getMessages = () => api.get<ContactMessage[]>('/messages').then(r => Array.isArray(r.data) ? r.data : []);
 export const markAsRead = (id: number) => api.patch(`/messages/${id}/read`);
 export const deleteMessage = (id: number) => api.delete(`/messages/${id}`);
 
