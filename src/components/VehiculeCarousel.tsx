@@ -48,7 +48,7 @@ const VehiculeCarousel = ({ vehicules, marqueName }: Props) => {
   return (
     <div className="w-full">
       {/* Slide principal */}
-      <div className="relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-zinc-800" style={{ aspectRatio: '16/9' }}>
+      <div className="relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-zinc-800" style={{ aspectRatio: '4/3' }}>
         <AnimatePresence custom={direction} mode="popLayout">
           <motion.div
             key={v.id}
@@ -68,17 +68,18 @@ const VehiculeCarousel = ({ vehicules, marqueName }: Props) => {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
             {/* Infos sur l'image */}
-            <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6">
-              {/* Statut */}
-              <span className={`inline-block text-xs px-2.5 py-1 rounded-full font-medium mb-2 ${
+            <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-6">
+              {/* Statut — masqué sur mobile */}
+              <span className={`hidden sm:inline-block text-xs px-2.5 py-1 rounded-full font-medium mb-2 ${
                 v.statut === 'disponible' ? 'bg-green-500 text-white' : 'bg-yellow-500 text-white'
               }`}>{v.statut}</span>
 
-              <h3 className="text-white font-bold text-lg sm:text-xl leading-tight">{v.nom}</h3>
-              <p className="text-gray-300 text-xs sm:text-sm mb-3">{v.annee}</p>
+              {/* Nom + année — masqués sur mobile */}
+              <h3 className="hidden sm:block text-white font-bold text-lg sm:text-xl leading-tight">{v.nom}</h3>
+              <p className="hidden sm:block text-gray-300 text-xs sm:text-sm mb-3">{v.annee}</p>
 
-              {/* Specs */}
-              <div className="flex flex-wrap gap-3 mb-4">
+              {/* Specs — masquées sur mobile */}
+              <div className="hidden sm:flex flex-wrap gap-3 mb-4">
                 <span className="flex items-center gap-1 text-gray-300 text-xs">
                   <Fuel className="w-3.5 h-3.5 text-red-400" /> {v.carburant}
                 </span>
@@ -88,11 +89,11 @@ const VehiculeCarousel = ({ vehicules, marqueName }: Props) => {
                 {v.couleur && <span className="text-gray-300 text-xs">{v.couleur}</span>}
               </div>
 
-              {/* Prix + CTA */}
+              {/* Prix + CTA — toujours visible */}
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-gray-400 text-xs">À partir de</p>
-                  <p className="text-white font-bold text-base sm:text-lg">
+                  <p className="text-gray-400 text-xs hidden sm:block">À partir de</p>
+                  <p className="text-white font-bold text-sm sm:text-lg">
                     {v.prix} <span className="text-xs font-normal text-gray-400">FCFA</span>
                   </p>
                 </div>

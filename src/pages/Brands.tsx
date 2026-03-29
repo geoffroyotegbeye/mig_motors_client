@@ -63,25 +63,20 @@ const Brands = () => {
                   onClick={() => setSelectedBrand(brand)}
                   className="cursor-pointer group"
                 >
-                  <div className="brand-circle relative w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full bg-gray-100 dark:bg-gradient-to-br dark:from-zinc-800 dark:to-zinc-900 border-2 border-gray-200 dark:border-zinc-700 hover:border-red-500 dark:hover:border-red-600/50 flex flex-col items-center justify-center p-4 sm:p-6 transition-all duration-500 shadow-sm dark:shadow-none">
-                    <div className="absolute inset-0 rounded-full bg-red-600/0 group-hover:bg-red-600/5 dark:group-hover:bg-red-600/10 transition-all duration-500" />
-                    <div className="relative z-10 flex flex-col items-center">
-                      <div className="w-16 h-16 md:w-20 md:h-20 mb-2 flex items-center justify-center">
-                        {brand.logo ? (
-                          <img src={brand.logo} alt={brand.nom}
-                            className="max-w-full max-h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity"
-                            onError={e => { e.currentTarget.style.display = 'none'; }} />
-                        ) : (
-                          <Icon className="w-12 h-12 text-gray-400" />
-                        )}
-                      </div>
-                      <span className="text-gray-800 dark:text-white font-semibold text-sm md:text-base text-center">{brand.nom}</span>
-                    </div>
+                  <div className="brand-circle relative w-28 h-28 sm:w-36 sm:h-36 md:w-44 md:h-44 rounded-full bg-gray-100 dark:bg-zinc-800 border-2 border-gray-200 dark:border-zinc-700 hover:border-red-500 dark:hover:border-red-600/50 transition-all duration-500 shadow-sm dark:shadow-none overflow-hidden">
+                    <div className="absolute inset-0 rounded-full bg-red-600/0 group-hover:bg-red-600/5 dark:group-hover:bg-red-600/10 transition-all duration-500 z-10" />
+                    {brand.logo ? (
+                      <img src={brand.logo} alt={brand.nom}
+                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                        onError={e => { e.currentTarget.style.display = 'none'; }} />
+                    ) : (
+                      <Icon className="w-12 h-12 text-gray-400 absolute inset-0 m-auto" />
+                    )}
                   </div>
-                  <div className="mt-4 text-center">
-                    <span className="text-xs text-gray-400 dark:text-gray-500 uppercase tracking-widest">{brand.type}</span>
+                  <div className="mt-3 text-center">
+                    <span className="text-xs sm:text-sm font-semibold text-gray-800 dark:text-white">{brand.nom}</span>
                     {count > 0 && (
-                      <p className="text-xs text-red-500 mt-1">{count} véhicule{count > 1 ? 's' : ''}</p>
+                      <p className="text-xs text-red-500 mt-0.5">{count} véhicule{count > 1 ? 's' : ''}</p>
                     )}
                   </div>
                 </motion.div>

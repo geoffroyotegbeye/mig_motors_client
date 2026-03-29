@@ -96,7 +96,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10 sm:mb-16">
             <span className="inline-block px-4 py-2 bg-red-600/10 dark:bg-red-600/20 border border-red-600/30 rounded-full text-red-600 dark:text-red-400 text-sm font-medium mb-4 sm:mb-6">
-              Notre offre
+              Nos offres
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
               Nos <span className="gradient-text">Marques</span>
@@ -115,14 +115,13 @@ const Home = () => {
                   transition={{ delay: index * 0.1, type: 'spring', bounce: 0.4 }} whileHover={{ y: -8 }}>
                   <Link to="/marques" className="flex flex-col items-center group">
                     <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-100 dark:bg-gradient-to-br dark:from-zinc-800 dark:to-zinc-900 border-2 border-gray-200 dark:border-zinc-700
-                    group-hover:border-red-500 dark:group-hover:border-red-600/50 flex items-center justify-center transition-all duration-500 relative shadow-sm dark:shadow-none overflow-hidden">
+                    group-hover:border-red-500 dark:group-hover:border-red-600/50 transition-all duration-500 relative shadow-sm dark:shadow-none overflow-hidden">
                       <div className="absolute inset-0 rounded-full bg-red-600/0 group-hover:bg-red-600/5 dark:group-hover:bg-red-600/10 transition-all duration-500 z-10" />
                       {marque.logo
                         ? <img src={marque.logo} alt={marque.nom} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" onError={e => { e.currentTarget.style.display = 'none'; }} />
-                        : <Icon className="w-7 h-7 text-gray-400 group-hover:text-red-500 transition-colors duration-300" />}
+                        : <Icon className="w-7 h-7 text-gray-400 group-hover:text-red-500 transition-colors duration-300 absolute inset-0 m-auto" />}
                     </div>
                     <p className="mt-2 sm:mt-3 text-gray-800 dark:text-white font-semibold text-xs text-center leading-tight">{marque.nom}</p>
-                    <p className="text-gray-400 dark:text-gray-500 text-xs text-center mt-0.5 hidden sm:block">{marque.type}</p>
                   </Link>
                 </motion.div>
               );
