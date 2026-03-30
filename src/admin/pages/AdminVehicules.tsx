@@ -239,7 +239,7 @@ const AdminVehicules = () => {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Image */}
-                <div>
+                {/* <div>
                   <label className="block text-gray-400 text-sm mb-2">Photo du véhicule</label>
                   <div className="flex items-center gap-4">
                     <div className="w-20 h-16 bg-zinc-800 rounded-xl overflow-hidden flex-shrink-0 flex items-center justify-center">
@@ -256,7 +256,59 @@ const AdminVehicules = () => {
                         className="w-full bg-zinc-800 border border-zinc-700 rounded-xl py-2 px-3 text-white text-sm placeholder-gray-500 focus:border-red-500 outline-none transition-all" />
                     </div>
                   </div>
-                </div>
+                </div> */}
+                <div className="space-y-4">
+  <label className="block text-gray-400 text-sm font-medium mb-2">Photo du véhicule</label>
+  
+  {/* On passe en flex-col sur mobile pour avoir de la place, et flex-row sur desktop */}
+  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+    
+    {/* Aperçu de l'image : on agrandit w-20 h-16 vers des tailles beaucoup plus grandes */}
+    <div className="w-full sm:w-48 h-32 sm:h-32 bg-zinc-800 rounded-2xl overflow-hidden flex-shrink-0 flex items-center justify-center border-2 border-dashed border-zinc-700">
+      {imageDisplay ? (
+        <img src={imageDisplay} alt="véhicule" className="w-full h-full object-cover" />
+      ) : (
+        <div className="text-center">
+          <Car className="w-10 h-10 text-gray-600 mx-auto mb-1" />
+          <span className="text-[10px] text-gray-500 uppercase font-bold">Aperçu</span>
+        </div>
+      )}
+    </div>
+
+    {/* Zone de contrôles (Bouton + URL) */}
+    <div className="flex-1 w-full space-y-3">
+      <button 
+        type="button" 
+        onClick={() => fileRef.current?.click()}
+        className="flex items-center gap-3 px-6 py-4 bg-zinc-800 border border-zinc-700 hover:border-red-500/50 hover:bg-zinc-700/50 text-white text-sm font-semibold rounded-2xl transition-all w-full justify-center shadow-lg"
+      >
+        <Upload className="w-5 h-5 text-red-500" /> 
+        Uploader une photo haute résolution
+      </button>
+      
+      <input 
+        ref={fileRef} 
+        type="file" 
+        accept="image/*" 
+        onChange={handleImage} 
+        className="hidden" 
+      />
+      
+      <div className="relative">
+        <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+          <span className="text-gray-500 text-xs">URL</span>
+        </div>
+        <input 
+          type="text" 
+          value={form.image} 
+          onChange={e => { setPreview(e.target.value); setForm({ ...form, image: e.target.value }); }}
+          placeholder=""
+          className="w-full bg-zinc-900 border border-zinc-700 rounded-2xl py-3 pl-12 pr-4 text-white text-sm placeholder-gray-600 focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none transition-all" 
+        />
+      </div>
+    </div>
+  </div>
+</div>
 
                 {/* Marque + Nom */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

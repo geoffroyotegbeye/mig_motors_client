@@ -132,13 +132,13 @@ const Home = () => {
 
       {/* Promo */}
       <section className="py-10 sm:py-14 bg-white dark:bg-transparent">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, scale: 0.97 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="rounded-3xl overflow-hidden shadow-xl dark:shadow-none mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg"
+            className="rounded-3xl overflow-hidden shadow-xl dark:shadow-none mx-auto w-full max-w-full md:max-w-3xl lg:max-w-5xl"
           >
             <img
               src="/promo/mig_promo.jpeg"
